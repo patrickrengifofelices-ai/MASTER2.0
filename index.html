@@ -1,0 +1,347 @@
+<title>MASTER</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: una app de celular centrada, una pantalla a la vez, fondo negro con acentos plata, verde y rojo */
+:root{
+  --bg:#000; --panel:#d9d9d9; --ink:#0b0b0b; --fg:#fff; --muted:#8d8d8d;
+  --btn:#4d4d4d; --ok:#22b92f; --ok-soft:#47ff30; --bad:#ff0000; --star:#ffcc00;
+  --font:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+html,body{background:var(--bg);color:var(--fg);font-family:var(--font)}
+body{
+  padding-block:16px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  font-size:16px;
+}
+.app{max-width:420px;margin:0 auto}
+.screen{display:flex;flex-direction:column;gap:16px;min-height:640px}
+.logo{display:block;margin:8px auto 0;width:150px;max-width:60%}
+.logo.small{width:44px;margin:0}
+.head{display:flex;align-items:center;gap:12px;border-bottom:2px solid #ddd;padding-bottom:10px}
+.head h1{flex:1;font-size:22px;margin:0;text-align:center;text-wrap:balance}
+.gear{width:36px;height:36px;border:0;background:none;color:#aab;font-size:26px;cursor:pointer}
+label{font-weight:700;font-size:15px;padding-left:14px;display:block;margin-bottom:4px}
+.field{width:100%;border:0;border-radius:999px;background:var(--panel);color:var(--ink);padding:13px 18px;font:inherit;font-size:16px}
+.btn{align-self:center;min-width:200px;border:0;border-radius:999px;background:var(--btn);color:#fff;font:inherit;font-weight:700;font-size:18px;padding:14px 30px;cursor:pointer}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.green{background:var(--ok);color:#000;font-size:24px;width:100%;padding:18px}
+.btn.red{background:var(--bad);color:#000;font-size:24px;width:100%;padding:16px}
+:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.title{text-align:center;font-size:30px;font-weight:800;margin:24px 0 8px}
+.terms{background:var(--panel);color:var(--ink);border-radius:24px;padding:16px 18px;max-height:340px;overflow-y:auto;font-weight:600;font-size:14px;line-height:1.4}
+.terms h3{margin:0 0 6px;font-size:14px}
+.terms ul{margin:4px 0;padding-left:20px}
+.check{display:flex;align-items:center;gap:12px;font-weight:700;font-size:17px;cursor:pointer}
+.check input{width:30px;height:30px;accent-color:#888;flex:none}
+.opt{display:flex;align-items:center;gap:14px;background:var(--panel);color:var(--ink);border-radius:999px;padding:16px 20px;font-weight:800;font-size:17px;cursor:pointer;border:3px solid transparent;text-align:left;font-family:inherit;width:100%}
+.opt.sel{border-color:var(--ok)}
+.opt .box{width:22px;height:22px;border:2px solid #000;background:#fff;flex:none;display:grid;place-items:center;font-size:16px}
+.opt.spec{border-radius:34px}
+.card{display:flex;align-items:center;gap:0;background:var(--panel);color:var(--ink);border-radius:999px 70px 70px 999px;border:0;cursor:pointer;text-align:left;font-family:inherit;width:100%;padding:0;overflow:hidden}
+.avatar{flex:none;width:112px;height:112px;border-radius:50%;display:grid;place-items:center;font-size:36px;font-weight:800;color:#fff}
+.card .info{padding:12px 18px;min-width:0}
+.card .nm{font-weight:800;font-size:16px;text-transform:uppercase}
+.card .job{font-weight:800;font-size:19px;text-transform:uppercase;margin:6px 0;text-wrap:balance}
+.card .st{font-weight:800;font-size:17px}
+.list{display:flex;flex-direction:column;gap:16px}
+.search{display:flex;gap:10px;align-items:center}
+.search .field{flex:1}
+.hero{width:100%;aspect-ratio:3/2;border-radius:6px;display:grid;place-items:center;font-size:64px;font-weight:800}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.thumbs div{aspect-ratio:4/3;border-radius:14px;display:grid;place-items:center;font-size:28px;font-weight:800}
+.h{font-weight:800;font-size:17px;margin:4px 0}
+.p{font-weight:600;line-height:1.45;margin:0}
+.comment{display:flex;gap:10px}
+.dot{flex:none;width:32px;height:32px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-size:18px}
+.comment b{display:block}
+.stars{display:flex;gap:10px;margin:8px 0 0}
+.stars button{border:0;background:none;padding:0;font-size:42px;line-height:1;color:#fff;cursor:pointer}
+.stars button.on{color:var(--star)}
+.stars.ro button{cursor:default;font-size:30px}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:20px;overflow:hidden}
+.ba div{aspect-ratio:1/1.05;display:grid;place-items:center;font-size:56px}
+.cap{display:grid;grid-template-columns:1fr 1fr;text-align:center;font-weight:700}
+.alert{border:0;border-radius:8px;padding:14px;font:inherit;font-weight:800;font-size:17px;color:#000;cursor:pointer;text-align:center;width:100%}
+.alert.g{background:var(--ok-soft)}
+.alert.r{background:#f90909;cursor:default}
+.note{font-size:13px;color:var(--muted);text-align:center;margin:0}
+.toast{position:sticky;bottom:12px;background:#fff;color:#000;border-radius:999px;padding:12px 18px;font-weight:700;text-align:center}
+</style>
+
+<div class="app" id="app">
+
+<!-- 1. Inicio -->
+<section class="screen" id="s-splash" style="justify-content:center">
+  <svg class="logo" viewBox="0 0 200 200" aria-label="MASTER"><use href="#logo"/></svg>
+  <button class="btn" data-go="s-registro">Entrar</button>
+</section>
+
+<!-- 2. Registro -->
+<section class="screen" id="s-registro" hidden>
+  <svg class="logo" viewBox="0 0 200 200" aria-label="MASTER"><use href="#logo"/></svg>
+  <form id="f-reg" style="display:flex;flex-direction:column;gap:12px" novalidate>
+    <div><label for="r-nom">Nombre(s)</label><input class="field" id="r-nom" autocomplete="given-name"></div>
+    <div><label for="r-ape">Apellidos</label><input class="field" id="r-ape" autocomplete="family-name"></div>
+    <div><label for="r-mail">E-mail</label><input class="field" id="r-mail" type="email" autocomplete="email"></div>
+    <div><label for="r-tel">Telefono</label><input class="field" id="r-tel" type="tel" inputmode="tel" autocomplete="tel"></div>
+    <div><label for="r-dni">DNI</label><input class="field" id="r-dni" inputmode="numeric" maxlength="8"></div>
+    <p class="note" id="reg-err" hidden style="color:#ff7b7b">Completa todos los campos. El DNI tiene 8 números.</p>
+    <button class="btn" type="submit">Siguiente</button>
+  </form>
+</section>
+
+<!-- 3. Términos -->
+<section class="screen" id="s-terminos" hidden>
+  <svg class="logo" viewBox="0 0 200 200" aria-label="MASTER"><use href="#logo"/></svg>
+  <div class="terms" tabindex="0">
+    <h3>TÉRMINOS Y CONDICIONES – OFICIO</h3>
+    <p style="margin:0 0 8px">Última actualización: 7 de noviembre de 2026</p>
+    <h3>1. Aceptación de los términos</h3>
+    <p style="margin:0 0 8px">El acceso y uso de OFICIO implica que el usuario ha leído y acepta los presentes Términos y Condiciones. OFICIO es una plataforma digital que facilita el contacto entre personas que necesitan servicios para el hogar y profesionales que ofrecen dichos servicios.</p>
+    <h3>2. Descripción del servicio</h3>
+    <p style="margin:0">La aplicación permite:</p>
+    <ul>
+      <li>Registrar cuentas de clientes y profesionales.</li>
+      <li>Buscar técnicos según su especialidad.</li>
+      <li>Solicitar servicios de reparación, instalación y mantenimiento.</li>
+      <li>Consultar perfiles y calificaciones de los profesionales.</li>
+      <li>Recibir y comparar presupuestos.</li>
+      <li>Coordinar fechas y horarios de atención.</li>
+      <li>Consultar el estado de las solicitudes.</li>
+      <li>Presentar consultas, quejas o reclamos.</li>
+    </ul>
+    <p style="margin:0 0 8px">Las funcionalidades dependerán de las herramientas habilitadas en la versión de la aplicación.</p>
+    <h3>3. Registro y creación de cuentas</h3>
+    <p style="margin:0 0 8px">Para utilizar OFICIO, los usuarios deberán proporcionar información verdadera, actualizada y completa. Cada usuario será responsable de mantener la confidencialidad de sus credenciales y de las actividades realizadas desde su cuenta. Los profesionales deberán proporcionar información sobre su identidad, especialidad y experiencia. OFICIO podrá solicitar documentación para verificar la información presentada.</p>
+    <h3>4. Responsabilidades de los clientes</h3>
+    <p style="margin:0">Los clientes se comprometen a proporcionar información clara sobre el servicio solicitado e indicar correctamente la dirección donde se realizará.</p>
+  </div>
+  <label class="check" style="padding:0"><input type="checkbox" id="acepto"> Acepto las politicas de privacidad</label>
+  <button class="btn" id="b-terms" disabled>Siguiente</button>
+</section>
+
+<!-- 4. Rol -->
+<section class="screen" id="s-rol" hidden>
+  <svg class="logo" viewBox="0 0 200 200" aria-label="MASTER"><use href="#logo"/></svg>
+  <h2 class="title">¿Qué eres?</h2>
+  <button class="opt" data-rol="cliente"><span class="box"></span>CLIENTE 👤</button>
+  <button class="opt" data-rol="trabajador"><span class="box"></span>TRABAJADOR 🛠️</button>
+  <button class="btn" id="b-rol" disabled>Siguiente</button>
+</section>
+
+<!-- 5. Especialidad (trabajador) -->
+<section class="screen" id="s-esp" hidden>
+  <div class="head"><svg class="logo small" viewBox="0 0 200 200"><use href="#logo"/></svg><h1>ESPECIALIDAD</h1></div>
+  <div class="list" id="esp-list" style="gap:12px"></div>
+  <button class="btn" id="b-esp" disabled>Siguiente</button>
+</section>
+
+<!-- 6. Lista de técnicos -->
+<section class="screen" id="s-lista" hidden>
+  <div class="head">
+    <svg class="logo small" viewBox="0 0 200 200"><use href="#logo"/></svg>
+    <div class="search" style="flex:1"><input class="field" id="buscar" placeholder="Buscador..." aria-label="Buscador"><span aria-hidden="true">🔍</span></div>
+    <button class="gear" aria-label="Ajustes" data-go="s-rol">⚙</button>
+  </div>
+  <div class="list" id="lista"></div>
+  <div id="lista-btn"></div>
+</section>
+
+<!-- 7. Perfil -->
+<section class="screen" id="s-perfil" hidden>
+  <div class="head"><svg class="logo small" viewBox="0 0 200 200"><use href="#logo"/></svg><h1 id="p-corto"></h1><button class="gear" aria-label="Volver" data-go="s-lista">⌂</button></div>
+  <div class="hero" id="p-hero"></div>
+  <div class="thumbs"><div style="background:#5a4632">🪚</div><div style="background:#7a6a55">📏</div><div style="background:#3e3a33">🔨</div></div>
+  <div>
+    <div class="h" id="p-nombre"></div>
+    <p class="p" id="p-desc"></p>
+  </div>
+  <div class="h">COMENTARIO....</div>
+  <div id="p-coms" style="display:flex;flex-direction:column;gap:16px"></div>
+  <button class="btn green" id="b-solicitar">SOLICITAR</button>
+</section>
+
+<!-- 8. Garantía y calificar (cliente) -->
+<section class="screen" id="s-garantia" hidden>
+  <div class="head"><svg class="logo small" viewBox="0 0 200 200"><use href="#logo"/></svg><h1 id="g-corto"></h1><button class="gear" aria-label="Ajustes" data-go="s-lista">⌂</button></div>
+  <div class="ba"><div style="background:#4a4f52">🪑</div><div style="background:#b5694f">🪑</div></div>
+  <div class="cap"><span>Antes</span><span>Despues</span></div>
+  <div><div class="h">GARANTIA...</div><p class="p">Cada servicio ofrecido tiene una garantia de medio año.</p></div>
+  <div>
+    <div class="h">ALERTAS...</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+      <button class="alert g" data-alerta="MANTENIMIENTO">MANTENIMIENTO</button>
+      <button class="alert g" data-alerta="REMBOLSO">REMBOLSO</button>
+      <button class="alert g" data-alerta="REVISIÓN">REVISIÓN</button>
+    </div>
+  </div>
+  <div><div class="h">CALIFICAR...</div><div class="stars" id="g-stars"></div></div>
+  <button class="btn red" id="b-cancelar">CANCELAR SERVICIO</button>
+  <div class="toast" id="toast" hidden></div>
+</section>
+
+<!-- 9. Alertas (trabajador) -->
+<section class="screen" id="s-alertas" hidden>
+  <div class="head"><svg class="logo small" viewBox="0 0 200 200"><use href="#logo"/></svg><h1>ANGELA P.</h1><button class="gear" aria-label="Volver" data-go="s-lista">⌂</button></div>
+  <div class="ba"><div style="background:#4a4f52">🪑</div><div style="background:#b5694f">🪑</div></div>
+  <div class="cap"><span>Antes</span><span>Despues</span></div>
+  <div><div class="h">GARANTIA...</div><p class="p">Cada servicio ofrecido tiene una garantia de medio año.</p></div>
+  <div>
+    <div class="h">ALERTAS...</div>
+    <div id="alertas-w" style="display:flex;flex-direction:column;gap:10px;margin-top:8px"></div>
+    <p class="note" id="sin-alertas" style="margin-top:8px" hidden>Sin alertas por ahora.</p>
+  </div>
+  <div><div class="h">CALIFICADO...</div><div class="stars ro" id="a-stars"></div></div>
+</section>
+
+</div>
+
+<!-- Logo reutilizable -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gM" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2e2e2"/><stop offset="1" stop-color="#4a4a4a"/></linearGradient>
+    <linearGradient id="gR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#857a79"/><stop offset="1" stop-color="#2b2525"/></linearGradient>
+    <g id="logo">
+      <ellipse cx="100" cy="84" rx="68" ry="72" fill="none" stroke="url(#gR)" stroke-width="7"/>
+      <path d="M50 120V70q0-14 14-14q8 0 14 6l22 20l22-20q6-6 14-6q14 0 14 14v50q0 14-14 14t-14-14V92l-22 20q-6 5-0 0l-22-20v28q0 14-14 14t-14-14z" fill="url(#gM)"/>
+      <ellipse cx="100" cy="36" rx="9" ry="12" fill="#cfcfcf"/>
+      <ellipse cx="100" cy="132" rx="8" ry="10" fill="#bdbdbd"/>
+      <text x="100" y="172" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-weight="800" font-size="34" fill="#9a9a9a">MASTER</text>
+    </g>
+  </defs>
+</svg>
+
+<script>
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+
+const tecnicos = [
+  {id:1, nombre:"Carlos Mendoza", corto:"CARLOS M.", oficio:"Carpintero y Ensamblador", color:"#6b4a2d", ini:"CM",
+   desc:"Elaboracion de sillas, mesa, escritorio, casa para mascota, repisa, comodas, estante, cofre de minecraft, figura de accion, todo hecho a base de madera y/o melamine de calidad",
+   coms:[
+     {n:"Susana Rodriguez", e:"👩", t:"El trabajo que me ofrecio el señor Carlos fue de mi total agrado ya que es una persona respondable, puntual y la mano de obra que hizo la silla fue de mi total agrado.", s:4},
+     {n:"Fabricio Diaz", e:"👨", t:"El trabajo fue de mi agrado, ya que pudo solucionar el problema de las patas de mi silla con facilidad y rápidez.", s:5},
+     {n:"Hector Manyari", e:"👨", t:"El trabajo no fue de mi agrado porque la puesta de las patas de mi sillon quedo en desnivel y que tardo mas de lo debido.", s:2}]},
+  {id:2, nombre:"Elizabeth Sanchez", corto:"ELIZABETH S.", oficio:"Tecnologías e Informática", color:"#4f6272", ini:"ES", desc:"Soporte técnico, instalación de redes y mantenimiento de equipos.", coms:[]},
+  {id:3, nombre:"Omar Rodriguez", corto:"OMAR R.", oficio:"Asistente de Helpdesk", color:"#3b4a5e", ini:"OR", desc:"Atención de incidencias, soporte a usuarios y revisión de equipos.", coms:[]},
+  {id:4, nombre:"Patrick Chavez", corto:"PATRICK C.", oficio:"Construcción, Pintura y Acabados", color:"#8a7a4a", ini:"PC", desc:"Pintura de interiores, acabados y remodelaciones pequeñas.", coms:[]}
+];
+const especialidades = ["💻 Tecnologías e informática","⚡️ Electricidad y Electrónica","🔧 Gasitaría y Plomería","🪵 Carpintería y Ensamblador","📷 Seguridad Electrónica","🧹 Limpieza y Servicio del Hogar","🚘 Servicio Automotrices y Mecánica","🛠 Construcción, Pintura y acabados"];
+
+const st = {rol:null, esp:null, tec:null, servicio:false, alertas:[]};
+const stars = (n, el, onclick) => {
+  el.innerHTML = "";
+  for (let i=1;i<=5;i++){
+    const b = document.createElement("button");
+    b.type="button"; b.textContent="★"; b.setAttribute("aria-label", i+" estrellas");
+    if (i<=n) b.classList.add("on");
+    if (onclick) b.onclick = () => onclick(i);
+    el.appendChild(b);
+  }
+};
+
+function go(id){
+  $$(".screen").forEach(s => s.hidden = s.id !== id);
+  window.scrollTo(0,0);
+  if (id==="s-lista") renderLista();
+  if (id==="s-alertas") renderAlertas();
+}
+document.addEventListener("click", e => {
+  const g = e.target.closest("[data-go]"); if (g) go(g.dataset.go);
+});
+
+// Registro
+$("#f-reg").addEventListener("submit", e => {
+  e.preventDefault();
+  const ids = ["r-nom","r-ape","r-mail","r-tel","r-dni"];
+  const ok = ids.every(i => $("#"+i).value.trim()) && /^\d{8}$/.test($("#r-dni").value.trim());
+  $("#reg-err").hidden = ok;
+  if (ok) go("s-terminos");
+});
+
+// Términos
+$("#acepto").onchange = e => $("#b-terms").disabled = !e.target.checked;
+$("#b-terms").onclick = () => go("s-rol");
+
+// Rol
+$$("[data-rol]").forEach(b => b.onclick = () => {
+  st.rol = b.dataset.rol;
+  $$("[data-rol]").forEach(x => { x.classList.toggle("sel", x===b); $(".box",x).textContent = x===b ? "✓" : ""; });
+  $("#b-rol").disabled = false;
+});
+$("#b-rol").onclick = () => go(st.rol==="trabajador" ? "s-esp" : "s-lista");
+
+// Especialidad
+especialidades.forEach(t => {
+  const b = document.createElement("button");
+  b.className="opt spec"; b.textContent=t;
+  b.onclick = () => { st.esp=t; $$("#esp-list .opt").forEach(x=>x.classList.toggle("sel",x===b)); $("#b-esp").disabled=false; };
+  $("#esp-list").appendChild(b);
+});
+$("#b-esp").onclick = () => go("s-alertas");
+
+// Lista
+function renderLista(){
+  const q = $("#buscar").value.trim().toLowerCase();
+  const l = $("#lista"); l.innerHTML = "";
+  tecnicos.filter(t => (t.nombre+" "+t.oficio).toLowerCase().includes(q)).forEach(t => {
+    const c = document.createElement("button");
+    c.className = "card";
+    c.innerHTML = `<span class="avatar" style="background:${t.color}">${t.ini}</span>
+      <span class="info"><div class="nm">${t.nombre}</div><div class="job">${t.oficio}</div><div class="st">🟢DISPONIBLE</div></span>`;
+    c.onclick = () => abrirPerfil(t);
+    l.appendChild(c);
+  });
+  if (!l.children.length) l.innerHTML = '<p class="note">No hay técnicos con ese nombre.</p>';
+  const lb = $("#lista-btn");
+  lb.innerHTML = st.servicio ? '<button class="btn red" id="b-cancel2">CANCELAR SERVICIO</button>' : "";
+  if (st.servicio) $("#b-cancel2").onclick = () => { st.servicio=false; renderLista(); };
+}
+$("#buscar").addEventListener("input", renderLista);
+
+// Perfil
+function abrirPerfil(t){
+  st.tec = t;
+  $("#p-corto").textContent = t.corto;
+  $("#p-hero").style.background = t.color; $("#p-hero").textContent = t.ini;
+  $("#p-nombre").textContent = "NOMBRES Y APELLIDO: " + t.nombre;
+  $("#p-desc").textContent = t.desc;
+  const box = $("#p-coms"); box.innerHTML = "";
+  if (!t.coms.length) box.innerHTML = '<p class="note" style="text-align:left">Aún no tiene comentarios.</p>';
+  t.coms.forEach(c => {
+    const d = document.createElement("div");
+    d.innerHTML = `<div class="comment"><span class="dot">${c.e}</span><div><b>${c.n}</b><span class="p">${c.t}</span><div class="stars ro"></div></div></div>`;
+    stars(c.s, $(".stars", d)); box.appendChild(d);
+  });
+  go("s-perfil");
+}
+$("#b-solicitar").onclick = () => {
+  st.servicio = true;
+  $("#g-corto").textContent = st.tec.corto;
+  setRating(0);
+  go("s-garantia");
+};
+function setRating(n){ stars(n, $("#g-stars"), setRating); }
+
+// Garantía y alertas
+$$("[data-alerta]").forEach(b => b.onclick = () => {
+  const t = $("#toast"); t.hidden = false;
+  t.textContent = "Alerta enviada: " + b.dataset.alerta;
+  const msg = {MANTENIMIENTO:"EL SERVICIO REQUIERE MANTENIMIENTO 🚨", REMBOLSO:"SE SOLICITA UN REMBOLSO DEL SERVICIO 🚨", "REVISIÓN":"SE SOLICITA UNA REVICION DEL SERVICIO 🚨"}[b.dataset.alerta];
+  if (!st.alertas.includes(msg)) st.alertas.push(msg);
+  setTimeout(() => t.hidden = true, 2200);
+});
+$("#b-cancelar").onclick = () => { st.servicio=false; go("s-lista"); };
+
+function renderAlertas(){
+  const w = $("#alertas-w"); w.innerHTML = "";
+  const lista = st.alertas.length ? st.alertas : [];
+  lista.forEach(m => { const d = document.createElement("div"); d.className="alert r"; d.textContent=m; w.appendChild(d); });
+  $("#sin-alertas").hidden = lista.length>0;
+  stars(5, $("#a-stars"));
+}
+
+go("s-splash");
+</script>
